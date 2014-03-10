@@ -1,0 +1,4 @@
+# YAML1.1
+# utf-8
+debug:      true
+port:       6181

@@ -1,0 +1,96 @@
+<html ng-app="phonecatApp">
+<head>
+<title>Angular JS Demo</title>
+<script type="text/javascript" src="http://cdn.staticfile.org/angular.js/1.2.0rc3/angular.min.js"></script>
+<script type="text/javascript" src="http://cdn.staticfile.org/angular.js/1.2.0rc3/angular-route.min.js"></script>
+<script type="text/javascript" src="http://cdn.staticfile.org/jquery/2.1.0/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://cdn.staticfile.org/twitter-bootstrap/3.1.1/css/bootstrap.min.css">
+<script type="text/javascript" src="http://cdn.staticfile.org/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://cdn.staticfile.org/bootbox.js/4.2.0/bootbox.min.js"></script>
+<script type="text/javascript">
+var phonecatApp = angular.module('phonecatApp', []);
+
+phonecatApp.controller('PhoneListCtrl', function ($scope) {
+    $scope.name = "View && Template && Controller";
+    $scope.phones = [
+        {'name': 'Nexus S',
+         'snippet': 'Fast just got faster with Nexus S.',
+         'age': 2014},
+        {'name': 'Motorola XOOM with Wi-Fi',
+         'snippet': 'The Next, Next Generation tablet.',
+         'age': 2013},
+        {'name': 'MOTOROLA XOOM',
+         'snippet': 'The Next, Next Generation tablet.',
+         'age': 2015}
+    ];
+    $scope.orderProp = 'age';
+});
+phonecatApp.controller('TablePagerCtrl', function($scope, $http) {
+    $scope.name = "Pageration by http.get";
+    $scope.page_no = 0;
+    $http.get('/table/next?page_no=' + $scope.page_no).success(function(data) {
+        $scope.rows = data.data;
+        $scope.page_no++;
+    })
+    $scope.getNext = function(page_no) {
+        if(page_no < 1) {
+            page_no = 1;
+        }
+        $http.get('/table/next?page_no=' + page_no).success(function(data) {
+            $scope.rows = data.data;
+            $scope.page_no = page_no + 1;
+        })
+    }
+    $scope.getPrev = function(page_no) {
+        if(page_no < 2) {
+            page_no = 2;
+        }
+        $http.get('/table/prev?page_no=' + page_no).success(function(data) {
+            $scope.rows = data.data;
+            $scope.page_no = page_no - 1;
+        })
+    }
+});
+</script>
+</head>
+<body class="container">
+<div class="row" ng-controller="PhoneListCtrl">
+    <div class="col-md-12">
+        <legend>{{name}}</legend>
+        <form class="form form-inline">
+            <input class="form-control" ng-model="query">
+            <select class="form-control" ng-model="orderProp">
+                <option value="name">Alphabetical</option>
+                <option value="age">Newest</option>
+            </select>
+        </form>
+        <ul>
+            <li ng-repeat="phone in phones | filter:query | orderBy:orderProp">
+                {{phone.name}}
+                <span>{{phone.snippet}} &nbsp; {{phone.age}}</span>
+            </li>
+        </ul>
+        Total numbers of phones {{phones.length}}
+    </div>
+</div>
+<div class="row" ng-controller="TablePagerCtrl">
+    <div class="col-md-12">
+        <legend>{{name}}</legend>
+        <table class="table table-bordered">
+            <thead>
+                <th>基数</th>
+                <th>阶乘</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in rows">
+                    <td>{{row.index}}</td>
+                    <td>{{row.data}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="btn btn-default" ng-click="getPrev(page_no)">Prev</button>
+        <button class="btn btn-default" ng-click="getNext(page_no)">Next</button>
+    </div>
+</div>
+</body>
+</html>
