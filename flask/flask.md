@@ -104,7 +104,7 @@ def logout():
 
 ## 返回 json
 
-```
+```python
 @app.route('/status')
 def status():
     return jsonify
