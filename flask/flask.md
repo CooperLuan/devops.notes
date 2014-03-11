@@ -9,20 +9,21 @@ Summary: Flask 学习笔记
 
 `Flask` 的目录结构同 `tornado`
 
-    :::
-    /flaskr
-        /static
-        /templates
-
+```
+/flaskr
+    /static
+    /templates
+```
 
 + `static` 静态资源 css/js 用 /static/ 访问
 + `templates` # 默认模板目录
 
 ## 基本 module
 
-    :::python
-    from flask import Flask, request, session, g, redirect, url_for, abort, \
-     render_template, flash, jsonify
+```
+from flask import Flask, request, session, g, redirect, url_for, abort, \
+ render_template, flash, jsonify
+```
 
 + `Flask`
 + `request` 封装的请求对象 `requests.args.get('id')`
@@ -37,59 +38,61 @@ Summary: Flask 学习笔记
 
 ## 基本配置
 
-    :::python
-    # create our little application :)
-    app = Flask(__name__)
-    app.config.from_object(__name__)
-    # Load default config and override config from an environment variable
-    app.config.update(dict(
-        DATABASE=os.path.join(app.root_path, 'flaskr.db'),
-        DEBUG=True,
-        SECRET_KEY='development key',
-        USERNAME='admin',
-        PASSWORD='default'
-    ))
-    app.config.from_envvar('FLASKR_SETTINGS', silent=True)
-    def connect_db():
-        """Connects to the specific database."""
-        rv = sqlite3.connect(app.config['DATABASE'])
-        rv.row_factory = sqlite3.Row
-        return rv
-    def get_db():
-        if not hasattr(g, 'sqlite_db'):
-            g.sqlite_db = connect_db()
-        return g.sqlite_db
-    if __name__ == '__main__':
-        app.run()
+```
+# create our little application :)
+app = Flask(__name__)
+app.config.from_object(__name__)
+# Load default config and override config from an environment variable
+app.config.update(dict(
+    DATABASE=os.path.join(app.root_path, 'flaskr.db'),
+    DEBUG=True,
+    SECRET_KEY='development key',
+    USERNAME='admin',
+    PASSWORD='default'
+))
+app.config.from_envvar('FLASKR_SETTINGS', silent=True)
+def connect_db():
+    """Connects to the specific database."""
+    rv = sqlite3.connect(app.config['DATABASE'])
+    rv.row_factory = sqlite3.Row
+    return rv
+def get_db():
+    if not hasattr(g, 'sqlite_db'):
+        g.sqlite_db = connect_db()
+    return g.sqlite_db
+if __name__ == '__main__':
+    app.run()
+```
 
 详细的配置处理见 [Configuration Handling](http://flask.pocoo.org/docs/config/)
 
 ## 简单请求处理 && session && flash
 
-    :::python
-    @app.route('/')
-    def index():
-        if not session.get('logged_in'):
-            abort(401)
-        return 'hello tank'
-    @app.route('/login', methods=['POST'])
-    def login():
-        error = None
-        if request.method == 'POST':
-            if request.form['username'] != app.config['USERNAME']:
-                error = 'Invalid username'
-            elif request.form['password'] != app.config['PASSWORD']:
-                error = 'Invalid password'
-            else:
-                session['logged_in'] = True
-                flash('You were logged in')
-                return redirect(url_for('show_entries'))
-        return render_template('login.html', error=error)
-    @app.route('/logout')
-    def logout():
-        session.pop('logged_in', None)
-        flash('You were logged out')
-        return redirect(url_for('show_entries'))
+```
+@app.route('/')
+def index():
+    if not session.get('logged_in'):
+        abort(401)
+    return 'hello tank'
+@app.route('/login', methods=['POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        if request.form['username'] != app.config['USERNAME']:
+            error = 'Invalid username'
+        elif request.form['password'] != app.config['PASSWORD']:
+            error = 'Invalid password'
+        else:
+            session['logged_in'] = True
+            flash('You were logged in')
+            return redirect(url_for('show_entries'))
+    return render_template('login.html', error=error)
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    flash('You were logged out')
+    return redirect(url_for('show_entries'))
+```
 
 `flash` 可以用于下一次请求
 
@@ -101,10 +104,11 @@ Summary: Flask 学习笔记
 
 ## 返回 json
 
-    :::python
-    @app.route('/status')
-    def status():
-        return jsonify
+```
+@app.route('/status')
+def status():
+    return jsonify
+```
 
 ## 错误处理
 
