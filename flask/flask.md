@@ -20,7 +20,7 @@ Summary: Flask 学习笔记
 
 ## 基本 module
 
-```
+```python
 from flask import Flask, request, session, g, redirect, url_for, abort, \
  render_template, flash, jsonify
 ```
@@ -38,7 +38,7 @@ from flask import Flask, request, session, g, redirect, url_for, abort, \
 
 ## 基本配置
 
-```
+```python
 # create our little application :)
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -68,7 +68,7 @@ if __name__ == '__main__':
 
 ## 简单请求处理 && session && flash
 
-```
+```python
 @app.route('/')
 def index():
     if not session.get('logged_in'):
