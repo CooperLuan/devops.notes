@@ -1,9 +1,4 @@
-Title: Flask Notes
-Date: 2014-03-11 00:30:00
-Category: Python
-Tags: python,flask
-Author: Cooper
-Summary: Flask 学习笔记
+`flask` 学习笔记
 
 ## 目录结构
 
