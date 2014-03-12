@@ -91,6 +91,17 @@ def logout():
 
 `flash` 可以用于下一次请求
 
+## 请求的预处理 && 请求尾处理
+
+```python
+@app.before_request
+def before_request():
+    pass
+@app.teardown_request
+def teardown_request():
+    pass
+```
+
 ## 模板
 
 `flask` 默认用了 `jinja2` 的模板引擎，这点比 `tornado` 好，避免模板引擎不够用的时候重复造轮子
@@ -108,6 +119,38 @@ def status():
 ## 错误处理
 
 [Logging Application Errors](http://flask.pocoo.org/docs/errorhandling/)
+
+## Signals 信号
+
+`signals` 做的事情和 `request_started` 类似, `request_started` 和 `before_request` 很相似，下面是不同
+
++ `request_started` 是无序的(不理解) 不修改任何数据
++ `before_request` 是按照一定顺序执行的，处理过程中可以通过 `abort/return` 生成 `Response` 并返回
+
+通过 `signals` 可以知道请求过程中发生的变化 一般用来做测试
+
+```python
+from flask import template_rendered
+from contextlib import contextmanager
+
+@contextmanager
+def captured_templates(app):
+    recorded = []
+    def record(sender, template, context, **extra):
+        recorded.append((template, context))
+    template_rendered.connect(record, app)
+    try:
+        yield recorded
+    finally:
+        template_rendered.disconnect(record, app)
+with captured_templates(app) as templates:
+    rv = app.test_client().get('/')
+    assert rv.status_code == 200
+    assert len(templates) == 1
+    template, context = templates[0]
+    assert template.name == 'index.html'
+    assert len(context['items']) == 10
+```
 
 ## 其它特性
 
