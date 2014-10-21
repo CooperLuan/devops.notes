@@ -18,6 +18,27 @@
 
 #### [使用 Python 元类（@廖雪峰）](http://weekly.manong.io/bounce?url=http%3A%2F%2Fwww.liaoxuefeng.com%2Fwiki%2F001374738125095c955c1e6d8bb493182103fac9270762a000%2F001386820064557c69858840b4c48d2b8411bc2ea9099ba000&aid=1362&nid=42)
 
+### advanced python
+
+### concurrent
+
+- `concurrent.futures.ProcessPoolExecutor`
+- `multiprocessing`
+
+### Scipy
+
+- [Python Scientific Lecture Notes](http://scipy-lectures.github.io/index.html)
+
+### optimizing code
+
+- %timeit
+- cProfile
+- cython
+
+### pandas
+
+### ipython
+
 ## JAVA
 
 ### Interview Topics
