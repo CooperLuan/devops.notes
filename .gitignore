@@ -38,3 +38,6 @@ nosetests.xml
 # ipython
 .ipynb_checkpoints
 
+# node
+node_modules
+
