@@ -1,7 +1,7 @@
 """
-celery -A tasks worker -l info
+celery -A tasks worker -l info --autoreload
 """
-from celery import Celery
+from celery import Celery, Task
 
 app = Celery('tasks', broker='redis://localhost')
 
@@ -27,3 +27,9 @@ def mul(x, y):
 @app.task
 def xsum(numbers):
     return sum(numbers)
+
+
+class AddJob(Task):
+
+    def run(self, *args):
+        return sum(args)

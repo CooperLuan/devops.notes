@@ -1,5 +1,5 @@
 from celery import group, chain, chord
-from tasks import add, mul, xsum
+from tasks import add, mul, xsum, AddJob
 
 result = add.delay(2, 2).get()
 print(result)
@@ -23,4 +23,7 @@ result = chord((mul.s(i, i) for i in range(10)), xsum.s())().get()
 print(result)
 
 result = (group(mul.s(i, i) for i in range(10)) | xsum.s())().get()
+print(result)
+
+result = AddJob().delay(123, 456).get()
 print(result)
