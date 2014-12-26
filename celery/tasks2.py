@@ -35,3 +35,9 @@ def parse_page(html):
 @app.task(ignore_result=True)
 def store_page(data):
     log.info('store data %s' % data)
+
+
+@app.task
+def chain_fetch_parse_store(url):
+    ch = fetch_page.s(url) | parse_page.s() | store_page.s()
+    return ch()
