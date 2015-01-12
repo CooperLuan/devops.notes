@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="store">
+<html ng-app="phonecatApp">
 <head>
     <meta charset='utf8'>
     <title>AngularJS Demo</title>
@@ -8,20 +8,75 @@
 <body>
 <div class="container">
     <div class="row">
-        <h1>Demo2</h1>
+        <legend>Load AngularJS</legend>
     </div>
     <div class="row">
-        <legend>Sample 1</legend>
         <p>{{ 3 + 5 }}</p>
+    </div>
+    <div class="row">
+        <legend>双向数据绑定</legend>
+    </div>
+    <div class="row">
+        <div class="form-inline">
+            Your Name <input type="text" class="form-control" ng-model="yourname" placeholder="Oh man" />
+        </div>
+        Hello {{ yourname || "World" }}
+    </div>
+    <div class="row">
+        <legend>AngularJS 模板</legend>
+    </div>
+    <div class="row" ng-controller="PhoneListCtrl">
+        <ul class="list-group col-md-12">
+            <li class="list-group-item" ng-repeat="phone in phones">
+                <h4>{{phone.name}}</h4>
+                <p>{{phone.snippet}}</p>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="alert alert-warning">
+            <p>
+            定义 ng-controller 时，需给给 np-app 赋值，并在 JS 代码中新建 module <code>angular.module('phonecatApp', [])</code>
+            然后指定一个 controller <code>phonecatApp.controller("PhoneListCtrl", function($scope) {});</code>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <legend><a href="https://docs.angularjs.org/tutorial/step_04">Filtering|Ordering Repeaters</a></legend>
+    </div>
+    <div class="row" ng-controller="PhoneListCtrl">
+        <div class="form-inline">
+            Filter: <input type="text" class="form-control" ng-model="query">
+            OrderBy: <select class="form-control" ng-model="orderProp">
+                <option value="name">name</option>
+                <option value="snippet">snippet</option>
+            </select>
+        </div>
+        <ul class="list-group col-md-12">
+            <li class="list-group-item" ng-repeat="phone in phones | filter:query | orderBy:orderProp">
+                <h4>{{phone.name}}</h4>
+                <p>{{phone.snippet}}</p>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <legend><a href="https://docs.angularjs.org/tutorial/step_05">XHRs & Dependency injection</a></legend>
     </div>
 </div>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script>
 <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.3.0/bootbox.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script>
 <script type="text/javascript">
-$(function() {
-    var app = angular.module('store', []);
+var phonecatApp = angular.module('phonecatApp', []);
+phonecatApp.controller("PhoneListCtrl", function($scope) {
+    $scope.phones = [{
+        'name': 'iPhone 5S',
+        'snippet': 'you\'re more powerful than you think',
+    }, {
+        'name': 'Meizu MX3',
+        'snippet': 'powerful',
+    }];
 })
 </script>
 </body>
