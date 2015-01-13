@@ -62,6 +62,20 @@
     <div class="row">
         <legend><a href="https://docs.angularjs.org/tutorial/step_05">XHRs & Dependency injection</a></legend>
     </div>
+    <div class="row" ng-controller="XHRPhoneListCtrl">
+        <ul class="list-group col-md-12">
+            <li class="list-group-item" ng-repeat="phone in phones | orderBy:orderProp">
+                <h4>{{phone.name}}</h4>
+                <p>{{phone.snippet}}</p>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <legend>Templating Links & Images</legend>
+    </div>
+    <div class="row">
+        <legend><a href="https://docs.angularjs.org/tutorial/step_07">Routing & Multiple Views</a></legend>
+    </div>
 </div>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script>
@@ -77,7 +91,13 @@ phonecatApp.controller("PhoneListCtrl", function($scope) {
         'name': 'Meizu MX3',
         'snippet': 'powerful',
     }];
-})
+});
+phonecatApp.controller("XHRPhoneListCtrl", ["$scope", "$http", function($scope, $http) {
+    $http.get('phones.json').success(function(data) {
+        $scope.phones = data;
+    })
+    $scope.orderProp = "name";
+}]);
 </script>
 </body>
 </html>
