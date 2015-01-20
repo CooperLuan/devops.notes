@@ -3,7 +3,7 @@
 <head>
     <meta charset='utf8'>
     <title>AngularJS Demo</title>
-    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container">
@@ -76,13 +76,53 @@
     <div class="row">
         <legend><a href="https://docs.angularjs.org/tutorial/step_07">Routing & Multiple Views</a></legend>
     </div>
+    <div class="row">
+        <a href="/views/multi_views.html" target="blank">View in another tab</a>
+    </div>
+    <div class="row">
+        <legend>More Templating</legend>
+    </div>
+    <div class="row">
+        <p>Don't know how to implement this feature in single app</p>
+    </div>
+    <div class="row">
+        <legend>Filters & Event Handlers</legend>
+    </div>
+    <div class="row" ng-controller="XHRPhoneListCtrl">
+        <ul class="list-group col-md-12">
+            <li class="list-group-item" ng-repeat="phone in phones">
+                <h4 ng-class="{{phone.style}}" ng-mouseenter="mouseEnter(phone.name)" ng-mouseleave="mouseLeave(phone.name)">{{phone.name}} <small>{{phone.name | filter_brand}}</small></h4>
+                <p>{{phone.snippet}}</p>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <pre class="col-md-12">
+var phonecatApp = angular.module('phonecatApp', ["phonecatBrandFilters"]);
+angular.module("phonecatBrandFilters", []).filter("filter_brand", function() {
+    return function(input) {
+        if (input.indexOf("iPhone") > -1) {
+            return "Apple";
+        }
+        if (input.indexOf("MeiZu") > -1) {
+            return "MeiZu";
+        }
+        if (input.indexOf("FirePhone") > -1) {
+            return "Amazon";
+        }
+    }
+})
+        </pre>
+    </div>
 </div>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script>
-<script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
+<script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.3.0/bootbox.min.js"></script>
 <script type="text/javascript">
-var phonecatApp = angular.module('phonecatApp', []);
+var phonecatApp = angular.module('phonecatApp', ["phonecatBrandFilters"]);
+
 phonecatApp.controller("PhoneListCtrl", function($scope) {
     $scope.phones = [{
         'name': 'iPhone 5S',
@@ -97,7 +137,34 @@ phonecatApp.controller("XHRPhoneListCtrl", ["$scope", "$http", function($scope, 
         $scope.phones = data;
     })
     $scope.orderProp = "name";
+
+    $scope.mouseEnter = function(name) {
+        console.log(name);
+        $scope.style = "label-success";
+    }
+    $scope.mouseLeave = function(name) {
+        console.log(name);
+        $scope.style = "";
+    }
 }]);
+
+/*
+** 在 angular.module 中定义 phonecatBrandFilters 后
+** 需要在初始化 app 时添加到参数列表
+*/
+angular.module("phonecatBrandFilters", []).filter("filter_brand", function() {
+    return function(input) {
+        if (input.indexOf("iPhone") > -1) {
+            return "Apple";
+        }
+        if (input.indexOf("MeiZu") > -1) {
+            return "MeiZu";
+        }
+        if (input.indexOf("FirePhone") > -1) {
+            return "Amazon";
+        }
+    }
+})
 </script>
 </body>
 </html>

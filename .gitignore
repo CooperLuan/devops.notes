@@ -42,3 +42,8 @@ nosetests.xml
 node_modules
 bower_components/
 
+# virtualenv
+include/
+man/
+share/
+

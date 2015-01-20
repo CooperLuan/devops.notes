@@ -1,10 +1,13 @@
 [{
+    "id": 1,
     "name": "iPhone 5S",
     "snippet": "you're more powerful than you think"
 }, {
-    "name": "Meizu MX3",
+    "id": 2,
+    "name": "MeiZu MX3",
     "snippet": "powerful"
 }, {
+    "id": 3,
     "name": "FirePhone",
     "snippet": "powered by Amazon"
 }]

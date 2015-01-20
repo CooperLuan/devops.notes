@@ -1,0 +1,13 @@
+<div class="form-inline">
+    Filter: <input type="text" class="form-control" ng-model="query">
+    OrderBy: <select class="form-control" ng-model="orderProp">
+        <option value="name">name</option>
+        <option value="snippet">snippet</option>
+    </select>
+</div>
+<ul class="list-group col-md-12">
+    <li class="list-group-item" ng-repeat="phone in phones | filter:query | orderBy:orderProp">
+        <a href="#/phones/{{phone.id}}"><h4>{{phone.name}}</h4></a>
+        <p>{{phone.snippet}}</p>
+    </li>
+</ul>
