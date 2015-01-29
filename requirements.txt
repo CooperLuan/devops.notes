@@ -16,3 +16,4 @@ scipy
 scikit-learn
 rq
 rq-dashboard
+spacy
